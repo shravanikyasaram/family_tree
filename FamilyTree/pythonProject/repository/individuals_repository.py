@@ -1,4 +1,4 @@
-from reporsitory.individuals_entity import IndividualsEntity
+from repository.individuals_entity import IndividualsEntity
 
 
 def find_by_individuals_id(individuals_id, db):

@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 
-from reporsitory.individuals_entity import IndividualsEntity
-from reporsitory.individuals_repository import find_by_individuals_id
-from reporsitory.marriage_entity import MarriageEntity
-from reporsitory.spouse_repository import get_spouse, get_couple
+from repository.individuals_entity import IndividualsEntity
+from repository.individuals_repository import find_by_individuals_id
+from repository.marriage_entity import MarriageEntity
+from repository.spouse_repository import get_spouse, get_couple
 from service.Logger import get_logger
 
 logger = get_logger(__name__)
@@ -29,6 +29,7 @@ def add_new_spouse(spouse_details, db):
 
 def get_spouse_details(spouse_id, db):
     spouse_data = get_spouse(spouse_id, db)
+    logger.info("Getting spouse details for: %s", {spouse_id})
     spouse_list = []
     for spouse, marriage in spouse_data:
         spouse_dict = {k: v for k, v in spouse.__dict__.items()}

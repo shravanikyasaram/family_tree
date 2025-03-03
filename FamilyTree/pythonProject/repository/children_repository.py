@@ -1,7 +1,7 @@
 from sqlalchemy import or_
 
-from reporsitory.individuals_entity import IndividualsEntity
-from reporsitory.parent_child_entity import ParentChildEntity
+from repository.individuals_entity import IndividualsEntity
+from repository.parent_child_entity import ParentChildEntity
 
 
 def get_children(parent_id, db):

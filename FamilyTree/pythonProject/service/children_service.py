@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 
-from reporsitory.children_repository import get_children
-from reporsitory.individuals_entity import IndividualsEntity
-from reporsitory.parent_child_entity import ParentChildEntity
+from repository.children_repository import get_children
+from repository.individuals_entity import IndividualsEntity
+from repository.parent_child_entity import ParentChildEntity
 from service.Logger import get_logger
 
 logger = get_logger(__name__)

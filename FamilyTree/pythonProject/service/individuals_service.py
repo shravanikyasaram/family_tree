@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
-from reporsitory.individuals_entity import IndividualsEntity
-from reporsitory.marriage_entity import MarriageEntity
+from repository.individuals_entity import IndividualsEntity
+from repository.marriage_entity import MarriageEntity
 from service.Logger import get_logger
 
 logger = get_logger(__name__)
