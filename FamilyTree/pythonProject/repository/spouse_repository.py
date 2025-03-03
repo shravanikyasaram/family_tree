@@ -2,8 +2,8 @@ from fastapi import HTTPException
 
 from sqlalchemy import or_
 
-from reporsitory.individuals_entity import IndividualsEntity
-from reporsitory.marriage_entity import MarriageEntity
+from repository.individuals_entity import IndividualsEntity
+from repository.marriage_entity import MarriageEntity
 
 
 def get_spouse(spouse_id, db):
