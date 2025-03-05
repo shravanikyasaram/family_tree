@@ -1,5 +1,7 @@
 from fastapi import HTTPException
 
+from Model.individuals import Individuals
+from Model.response.marriage_response import MarriageResponse
 from repository.individuals_entity import IndividualsEntity
 from repository.individuals_repository import find_by_individuals_id
 from repository.marriage_entity import MarriageEntity
@@ -39,5 +41,10 @@ def get_spouse_details(spouse_id, db):
         })
     return spouse_list
 
-def get_couple_details(couple_id, db):
-    return get_couple(couple_id, db)
+def get_couple_details(individual_id, db):
+    marriage, husband_details, wife_details =  get_couple(individual_id, db)
+    return MarriageResponse(
+        wedding_date = marriage.wedding_date,
+        husband = Individuals(**husband_details.__dict__),
+        wife = Individuals(**wife_details.__dict__)
+    )
