@@ -6,6 +6,7 @@ class IndividualsEntity(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(100), index=True, nullable=False)
     last_name = Column(String(100), index=True, nullable=False)
+    nick_name = Column(String(50), nullable=False)
     gender = Column(String(10), nullable=False)
     date_of_birth = Column(Date, nullable=False)
     date_of_death = Column(Date, nullable=True)
