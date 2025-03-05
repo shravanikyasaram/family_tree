@@ -15,28 +15,12 @@ def get_spouse(spouse_id, db):
             .filter(IndividualsEntity.id != spouse_id)
             .all())
 
-def get_couple(couple_id, db):
-    marriage = db.query(MarriageEntity).filter(MarriageEntity.id == couple_id).first()
+def get_couple(individual_id, db):
+    marriage = db.query(MarriageEntity).filter(MarriageEntity.id == individual_id).first()
     if not marriage:
-        raise HTTPException(statucode=500, detail='No data found')
+        raise HTTPException(status_code=500, detail='No data found')
 
-    husband = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.husband_id).first()
-    wife = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.wife_id)
+    husband_details = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.husband_id).first()
+    wife_details = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.wife_id).first()
 
-    return {
-        "wedding_date": str(marriage.wedding_date),
-        "husband": {
-            "id": husband.id,
-            "first_name": husband.first_name,
-            "last_name": husband.last_name,
-            "gender": husband.gender,
-            "date_of_birth": str(husband.date_of_birth)
-        },
-        "wife": {
-            "id": wife.id,
-            "first_name": wife.first_name,
-            "last_name": wife.last_name,
-            "gender": wife.gender,
-            "date_of_birth": str(wife.date_of_birth)
-        }
-    }
+    return marriage, husband_details, wife_details

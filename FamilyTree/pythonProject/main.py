@@ -7,7 +7,7 @@ from Model.first_couple import FirstCouple
 from Model.spouse import Spouse
 from database.database import get_db_connection
 from service.children_service import add_children, get_children_details
-from service.individuals_service import add_first_couple
+from service.individuals_service import add_first_couple, get_family_tree_details
 from service.spouse_service import add_new_spouse, get_spouse_details, get_couple_details
 
 app = FastAPI()
@@ -32,13 +32,17 @@ async def add_spouse(spouse: Spouse, db: Session = Depends(get_db_connection)):
     return {"message": "Spouse added successfully"}
 
 @app.get("/children/{parent_id}")
-async def get_individual(parent_id, db: Session = Depends(get_db_connection)):
+async def get_children(parent_id: int, db: Session = Depends(get_db_connection)):
     return get_children_details(parent_id, db)
 
 @app.get("/spouse/{spouse_id}")
-async def get_spouse(spouse_id, db: Session = Depends(get_db_connection)):
+async def get_spouse(spouse_id: int, db: Session = Depends(get_db_connection)):
     return get_spouse_details(spouse_id, db)
 
-@app.get("/marriage/{id}")
-async def get_couple(couple_id, db: Session = Depends(get_db_connection)):
-    return get_couple_details(couple_id, db)
+@app.get("/marriage/{individual_id}")
+async def get_couple(individual_id: int, db: Session = Depends(get_db_connection)):
+    return get_couple_details(individual_id, db)
+
+@app.get("/family_tree/{last_name}")
+async def get_family_tree(last_name: str, db: Session = Depends(get_db_connection)):
+    return get_family_tree_details(last_name, db)
