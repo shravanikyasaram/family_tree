@@ -6,7 +6,8 @@ from Model.base_model_with_print import BaseModelWithPrint
 class Individuals(BaseModelWithPrint):
     first_name: str
     last_name: str
-    date_of_birth: date
+    nick_name: Optional[str] = None
+    date_of_birth: Optional[date] = None
     date_of_death: Optional[date] = None
     gender: Optional[str] = None
     location: Optional[str] = None

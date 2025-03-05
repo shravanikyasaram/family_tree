@@ -18,7 +18,7 @@ def get_spouse(spouse_id, db):
 def get_couple(individual_id, db):
     marriage = db.query(MarriageEntity).filter(MarriageEntity.id == individual_id).first()
     if not marriage:
-        raise HTTPException(status_code=500, detail='No data found')
+        raise HTTPException(status_code=500, detail='No marriage details found')
 
     husband_details = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.husband_id).first()
     wife_details = db.query(IndividualsEntity).filter(IndividualsEntity.id == marriage.wife_id).first()

@@ -1,5 +1,6 @@
 from sqlalchemy import text
 
+from Model.individuals import Individuals
 from repository.individuals_entity import IndividualsEntity
 
 
@@ -52,3 +53,9 @@ def get_family_tree(individuals_id, db):
     result = db.execute(query, {"individuals_id": individuals_id})
     family_tree = result.fetchall()
     return family_tree
+
+def check_if_individual_already_exit(individuals, db):
+    existing_individual = db.query(IndividualsEntity).filter(
+        IndividualsEntity.first_name == individuals["first_name"],
+        IndividualsEntity.last_name == individuals["last_name"],
+        IndividualsEntity.date_of_birth == individuals["date_of_birth"]).first()
