@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from Model.individuals import Individuals
 from Model.response.marriage_response import MarriageResponse
 from repository.individuals_entity import IndividualsEntity
-from repository.individuals_repository import find_by_individuals_id
+from repository.individuals_repository import get_by_individuals_id
 from repository.marriage_entity import MarriageEntity
 from repository.spouse_repository import get_spouse, get_couple
 from service.Logger import get_logger
@@ -13,16 +13,17 @@ logger = get_logger(__name__)
 
 def add_new_spouse(spouse_details, db):
     individual_id = spouse_details.individual_id
-    individual_id_from_db = find_by_individuals_id(individual_id, db)
+    individual_id_from_db = get_by_individuals_id(individual_id, db)
 
     if not spouse_details or not spouse_details.individual_id or individual_id_from_db is None:
         raise HTTPException(status_code=400, detail='Invalid Spouse details')
 
-    check_if_user_already_exist(spouse_details, db)
 
     for partner in spouse_details.partner:
         spouse = partner.model_dump()
         wedding_date = spouse.pop("wedding_date")
+        check_if_user_already_exist(spouse, db)
+
         spouse_entity = IndividualsEntity(**spouse)
         db.add(spouse_entity)
         db.flush()

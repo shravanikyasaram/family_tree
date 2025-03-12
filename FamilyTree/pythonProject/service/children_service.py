@@ -12,11 +12,11 @@ def add_children(individuals, db):
     if not individuals.father_id or not individuals.mother_id:
         raise HTTPException(status_code=400, detail='Invalid Children details.')
 
-    check_if_user_already_exist(individuals, db)
 
     children_entities = []
     for child in individuals.children:
         child_details = child.model_dump()
+        check_if_user_already_exist(child_details, db)
         child_entity = IndividualsEntity(**child_details)
         db.add(child_entity)
         logger.info('child details %s', child_entity)
