@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 
-from Model.response.individuals_response import IndividualsResponse
 from repository.individuals_entity import IndividualsEntity
-from repository.individuals_repository import get_family_tree, get_individual_id_by_last_name
+from repository.individuals_repository import get_individual_id_by_last_name, get_individual, get_spouse_details, \
+    get_children_details
 from repository.marriage_entity import MarriageEntity
 from service.Logger import get_logger
 from util.family_tree_util import check_if_user_already_exist
@@ -13,9 +13,10 @@ def add_first_couple(individuals, db):
     if not individuals.husband or not individuals.wife:
         raise HTTPException(status_code=400, detail='You have to enter both Husband and Wife details.')
 
-    check_if_user_already_exist(individuals, db)
+    husband_details = individuals.husband.model_dump()
+    husband = IndividualsEntity()
+    check_if_user_already_exist(husband_details, db)
 
-    husband = IndividualsEntity(**individuals.husband.model_dump())
     db.add(husband)
     db.flush()
     logger.info("Saving husband details: %s",  husband)
@@ -23,6 +24,7 @@ def add_first_couple(individuals, db):
     for wife_data in individuals.wife:
         wife_details = wife_data.model_dump()
         wedding_date = wife_details.pop("wedding_date")
+        check_if_user_already_exist(wife_details, db)
         wife = IndividualsEntity(**wife_details)
         db.add(wife)
         logger.info("Saving wife details: %s", wife)
@@ -35,25 +37,33 @@ def add_first_couple(individuals, db):
 def get_family_tree_details(last_name, db):
     individual_id = get_individual_id_by_last_name(last_name, db)
     if not individual_id:
-        raise HTTPException(status_code=500, detail='Last Name not found')
+        raise HTTPException(status_code=500, detail='No family members found')
 
-    logger.info("individual_id is: %s", individual_id)
-    family_details = get_family_tree(individual_id, db)
-    individuals_list = []
+    individual = get_individual(individual_id, db)
+    family_tree = build_family_tree(individual, db)
 
-    for individual_details in family_details:
-        logger.info("each individual_details are: %s", individual_details)
-        individual = IndividualsResponse(**{
-            "first_name": individual_details[1],
-            "last_name": individual_details[2],
-            "nick_name": individual_details[3],
-            "gender": individual_details[4],
-            "date_of_birth": individual_details[5],
-            "date_of_death": individual_details[6],
-            "location": individual_details[7],
-            "occupation": individual_details[8],
-            "relation_type": individual_details[9]
-        })
-        individuals_list.append(individual)
+    return family_tree
 
-    return individuals_list
+
+def build_family_tree(individual, db):
+    individual_id = individual['id']
+    spouses = get_spouse_details(individual_id, db)
+    children = []
+
+    for spouse in spouses:
+        spouse_children = get_children_details(individual_id, spouse["id"], db)
+        spouse["children"] = []
+
+        for child in spouse_children:
+            child_data = get_individual(child["id"], db)
+            spouse["children"].append(build_family_tree(child_data, db))
+            children.append(build_family_tree(child_data, db))
+
+    family_tree = {
+        **individual
+    }
+
+    if spouses:
+        family_tree["spouse"] = spouses
+
+    return family_tree
