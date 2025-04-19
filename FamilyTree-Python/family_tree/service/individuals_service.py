@@ -14,8 +14,8 @@ def add_first_couple(individuals, db):
         raise HTTPException(status_code=400, detail='You have to enter both Husband and Wife details.')
 
     husband_details = individuals.husband.model_dump()
-    husband = IndividualsEntity()
     check_if_user_already_exist(husband_details, db)
+    husband = IndividualsEntity(**husband_details)
 
     db.add(husband)
     db.flush()
