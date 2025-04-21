@@ -21,10 +21,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def hello():
-    return "Hello World!"
-
 @app.post("/individuals")
 async def add_individual(individuals: FirstCouple, db: Session = Depends(get_db_connection)):
     logger.info("individual details: %s", individuals)

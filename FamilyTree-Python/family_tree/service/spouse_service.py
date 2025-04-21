@@ -33,7 +33,7 @@ def add_new_spouse(spouse_details, db):
         db.add(marriage)
     db.commit()
 
-def get_spouse_details(spouse_id, db):
+def get_spouse_details(spouse_id, db) -> list:
     spouse_data = get_spouse(spouse_id, db)
 
     if not spouse_data:

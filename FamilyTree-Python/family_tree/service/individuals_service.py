@@ -1,3 +1,5 @@
+from typing import Dict
+
 from fastapi import HTTPException
 
 from repository.individuals_entity import IndividualsEntity
@@ -9,7 +11,7 @@ from util.family_tree_util import check_if_user_already_exist
 
 logger = get_logger(__name__)
 
-def add_first_couple(individuals, db):
+def add_first_couple(individuals, db) -> Dict[str, str]:
     if not individuals.husband or not individuals.wife:
         raise HTTPException(status_code=400, detail='You have to enter both Husband and Wife details.')
 
@@ -34,7 +36,7 @@ def add_first_couple(individuals, db):
         db.add(marriage)
     db.commit()
 
-def get_family_tree_details(last_name, db):
+def get_family_tree_details(last_name, db) -> dict:
     individual_id = get_individual_id_by_last_name(last_name, db)
     if not individual_id:
         raise HTTPException(status_code=500, detail='No family members found')

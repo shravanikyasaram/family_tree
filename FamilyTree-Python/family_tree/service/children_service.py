@@ -1,5 +1,8 @@
+from typing import Dict
+
 from fastapi import HTTPException
 
+from Model.individuals import Individuals
 from repository.children_repository import get_children
 from repository.individuals_entity import IndividualsEntity
 from repository.parent_child_entity import ParentChildEntity
@@ -8,7 +11,7 @@ from util.family_tree_util import check_if_user_already_exist
 
 logger = get_logger(__name__)
 
-def add_children(individuals, db):
+def add_children(individuals, db) -> Dict[str, str]:
     if not individuals.father_id or not individuals.mother_id:
         raise HTTPException(status_code=400, detail='Invalid Children details.')
 
@@ -33,7 +36,7 @@ def add_children(individuals, db):
 
     db.commit()
 
-def get_children_details(parent_id, db):
+def get_children_details(parent_id, db) -> list[Individuals]:
     children = get_children(parent_id, db)
 
     if not children:

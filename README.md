@@ -1,4 +1,4 @@
-# Family Tree: A FastAPI based Python application
+# Family Tree: 
 
 # Setup Instructions
 * git clone https://github.com/shravanikyasaram/family_tree.git
@@ -9,5 +9,13 @@
 * source .venv/bin/activate
 * pip install -r requirements.txt
 
-# Run the application
+# Run the Service
 * uvicorn main:app --reload
+
+# Swagger 
+* http://localhost:8000/docs
+
+# Start the React App
+* npm install
+* npm run dev
+* Open http://localhost:5173/
