@@ -11,9 +11,9 @@ from util.family_tree_util import check_if_user_already_exist
 
 logger = get_logger(__name__)
 
-def add_first_couple(individuals, db) -> Dict[str, str]:
+def add_ancestors(individuals, db) -> Dict[str, str]:
     if not individuals.husband or not individuals.wife:
-        raise HTTPException(status_code=400, detail='You have to enter both Husband and Wife details.')
+        raise HTTPException(status_code=500, detail='You have to enter both Husband and Wife details.')
 
     husband_details = individuals.husband.model_dump()
     check_if_user_already_exist(husband_details, db)

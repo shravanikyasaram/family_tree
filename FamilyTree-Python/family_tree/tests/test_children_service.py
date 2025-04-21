@@ -56,7 +56,7 @@ def test_add_children_with_no_parent_id():
     with pytest.raises(HTTPException) as e:
         add_children(mock_data, db=None)
 
-    assert e.value.status_code == 400
+    assert e.value.status_code == 500
     assert e.value.detail == 'Invalid Children details.'
 
 def test_add_children(mocker):

@@ -13,7 +13,7 @@ logger = get_logger(__name__)
 
 def add_children(individuals, db) -> Dict[str, str]:
     if not individuals.father_id or not individuals.mother_id:
-        raise HTTPException(status_code=400, detail='Invalid Children details.')
+        raise HTTPException(status_code=500, detail='Invalid Children details.')
 
 
     children_entities = []

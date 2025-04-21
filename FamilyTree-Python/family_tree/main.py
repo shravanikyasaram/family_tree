@@ -8,7 +8,7 @@ from Model.first_couple import FirstCouple
 from Model.spouse import Spouse
 from database.database import get_db_connection
 from service.children_service import add_children, get_children_details
-from service.individuals_service import add_first_couple, get_family_tree_details, logger
+from service.individuals_service import add_ancestors, get_family_tree_details, logger
 from service.spouse_service import add_new_spouse, get_spouse_details, get_couple_details
 
 app = FastAPI()
@@ -24,7 +24,7 @@ app.add_middleware(
 @app.post("/individuals")
 async def add_individual(individuals: FirstCouple, db: Session = Depends(get_db_connection)):
     logger.info("individual details: %s", individuals)
-    add_first_couple(individuals, db)
+    add_ancestors(individuals, db)
     return {"message": "Couple added successfully"}
 
 @app.post("/children")

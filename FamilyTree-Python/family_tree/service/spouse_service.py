@@ -16,7 +16,7 @@ def add_new_spouse(spouse_details, db):
     individual_id_from_db = get_by_individuals_id(individual_id, db)
 
     if not spouse_details or not spouse_details.individual_id or individual_id_from_db is None:
-        raise HTTPException(status_code=400, detail='Invalid Spouse details')
+        raise HTTPException(status_code=500, detail='Invalid Spouse details')
 
 
     for partner in spouse_details.partner:
